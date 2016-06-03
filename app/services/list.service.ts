@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
 export interface Item {title: string, note: string, icon: string};
 
@@ -16,8 +17,20 @@ export class ListService {
         return this._icons[Math.floor(Math.random() * this._icons.length)];
     }
 
+    getItems() {
+        setTimeout(() => {
+            for(let i = 1; i < 11; i++) {
+              this.addItem({
+                title: 'Item ' + i,
+                note: 'This is item #' + i,
+                icon: this.chooseIcon()
+              });
+            }
+        }, 250)
+    }
+
     items() {
-        return this._items;
+        return Observable.of(this._items);
     }
 
     clearItems() {
