@@ -1,28 +1,24 @@
 import {Page, NavController, NavParams} from 'ionic-angular';
 import {ItemDetailsPage} from '../item-details/item-details';
-
+import {ListService, Item} from '../../services/list.service';
 
 @Page({
-  templateUrl: 'build/pages/list/list.html'
+  templateUrl: 'build/pages/list/list.html',
+  providers: [ListService]
 })
 export class ListPage {
-  selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  selectedItem: Item;
 
-  constructor(private nav: NavController, navParams: NavParams) {
+  constructor(private nav: NavController, navParams: NavParams, public listService: ListService) {
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
 
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    'american-football', 'boat', 'bluetooth', 'build'];
-
-    this.items = [];
+    listService.clearItems();
     for(let i = 1; i < 11; i++) {
-      this.items.push({
+      listService.addItem({
         title: 'Item ' + i,
         note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
+        icon: listService.chooseIcon()
       });
     }
   }
